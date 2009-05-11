@@ -25,3 +25,4 @@ class AuthorizableObject
     user == @owner
   end
 end
+

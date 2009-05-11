@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class UserTest < Test::Unit::TestCase
-  fixtures :users
+class UserTest < ActiveSupport::TestCase
 
   def test_set_and_unset_role
     oreilly_hackers = Group.create( :name => 'Hacker of Year' )
@@ -303,6 +302,8 @@ class UserTest < Test::Unit::TestCase
 
     bill.has_role("fan", alexander)
     bill.has_role("follower", alexander)
+
+# FIXME : Kieran Pilkington <kieran@katipo.co.nz> : 3354a457ddfa3c57af3f69260f8c7274149325cd
 
     bill.has_no_roles_for(alexander)
     assert bill.has_role?("fan", angelina)

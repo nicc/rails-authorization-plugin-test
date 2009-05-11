@@ -4,14 +4,7 @@ require 'rest_controller'
 # Re-raise errors caught by the controller.
 class RestController; def rescue_action(e) raise e end; end
 
-class RestControllerTest < Test::Unit::TestCase
-  fixtures :users
-
-  def setup
-    @controller = RestController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-  end
+class RestControllerTest < ActionController::TestCase
 
   def test_show_denied
     get :index
@@ -30,3 +23,4 @@ class RestControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 end
+

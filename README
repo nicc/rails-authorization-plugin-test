@@ -21,7 +21,9 @@ Running the Tests:
     - cd ../../../
     - rake test
 
-(Note: Learn more about using submodules here : http://woss.name/2008/04/09/using-git-submodules-to-track-vendorrails/ )
+Note: Learn more about using submodules
+http://speirs.org/2009/05/11/understanding-git-submodules/
+http://woss.name/2008/04/09/using-git-submodules-to-track-vendorrails/
 
 - Make sure /config/database.yml has the correct settings for your DB (Default Sqlite3).
 - Run the migration using "rake db:migrate" or reset the DB with "rake db:migrate:reset"

@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class GroupTest < Test::Unit::TestCase
-  #fixtures :groups
-  fixtures :users
+class GroupTest < ActiveSupport::TestCase
 
   def setup
     @ruby_on_rails = Group.create( :name => 'Ruby on Rails Developers' )

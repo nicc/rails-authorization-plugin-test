@@ -6,3 +6,4 @@ class Group < ActiveRecord::Base
     super
   end
 end
+
