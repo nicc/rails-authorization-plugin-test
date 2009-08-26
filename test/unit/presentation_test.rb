@@ -40,4 +40,39 @@ class PresentationTest < ActiveSupport::TestCase
     assert !@presentation.accepts_role?('owner', @alexander)
   end
   
+  def test_update_to_owner_updates_roles_accordingly
+    assert @dhh.is_owner_of?(@presentation)
+    assert !@alexander.is_owner_of?(@presentation)
+    
+    @presentation.owner = @alexander
+    @presentation.save
+    @presentation.reload
+    
+    assert !@dhh.is_owner_of?(@presentation)
+    assert @alexander.is_owner_of?(@presentation)
+  end
+  
+  def test_model_updates_arent_affected_when_roles_change
+    @presentation.name = "new name"
+    @presentation.owner = @alexander
+    @presentation.save
+    @presentation.reload
+    
+    assert_equal "new name", @presentation.name
+    assert_equal @alexander, @presentation.owner
+    
+    assert !@dhh.is_owner_of?(@presentation)
+    assert @alexander.is_owner_of?(@presentation)
+  end
+  
+  def test_model_updates_arent_affected_when_roles_dont_change
+    @presentation.name = "new name"
+    @presentation.save
+    @presentation.reload
+    
+    assert_equal "new name", @presentation.name
+    
+    assert @dhh.is_owner_of?(@presentation)
+  end
+  
 end
