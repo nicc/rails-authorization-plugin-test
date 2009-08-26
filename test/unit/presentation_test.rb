@@ -75,4 +75,86 @@ class PresentationTest < ActiveSupport::TestCase
     assert @dhh.is_owner_of?(@presentation)
   end
   
+  
+  # pls excuse the length on this one... just making sure the instance vars dont confuse each other during multiple saves
+  def test_multiple_updates_on_same_object
+    # we start with dhh as owner and alexander as user/creator
+    @presentation.name = "new name"
+    @presentation.owner = @alexander
+    @presentation.save
+    
+    assert_equal "new name", @presentation.name
+    assert_equal @alexander, @presentation.owner
+    assert_equal @alexander, @presentation.user
+    
+    assert !@dhh.is_owner_of?(@presentation)
+    assert @alexander.is_owner_of?(@presentation)
+    
+    # ---- owner is now alexander, user/creator also alexander
+    
+    @presentation.name = "new name 2"
+    @presentation.save
+    
+    assert_equal "new name 2", @presentation.name
+    assert_equal @alexander, @presentation.owner
+    assert_equal @alexander, @presentation.user
+    
+    assert !@dhh.is_owner_of?(@presentation)
+    assert @alexander.is_owner_of?(@presentation)
+    
+    assert !@dhh.is_creator_of?(@presentation)
+    assert @alexander.is_creator_of?(@presentation)
+    
+    # --- no change.  owner:  alexander, user/creator:  alexander.
+    
+    @presentation.name = "new name 3"
+    @presentation.user = @dhh
+    @presentation.save
+    
+    assert_equal "new name 3", @presentation.name
+    assert_equal @alexander, @presentation.owner
+    assert_equal @dhh, @presentation.user
+    
+    assert !@dhh.is_owner_of?(@presentation)
+    assert @alexander.is_owner_of?(@presentation)
+    
+    assert !@alexander.is_creator_of?(@presentation)
+    assert @dhh.is_creator_of?(@presentation)
+    
+    # --- owner is still alexander, but user/creator is now dhh.
+    
+    @presentation.name = "new name 4"
+    @presentation.owner = @dhh
+    @presentation.save
+    
+    assert_equal "new name 4", @presentation.name
+    assert_equal @dhh, @presentation.owner
+    assert_equal @dhh, @presentation.user
+    
+    assert !@alexander.is_owner_of?(@presentation)
+    assert @dhh.is_owner_of?(@presentation)
+    
+    assert !@alexander.is_creator_of?(@presentation)
+    assert @dhh.is_creator_of?(@presentation)
+    
+    # --- owner is now also dhh, user/creator is still dhh.
+    
+    @presentation.name = "new name 5"
+    @presentation.owner = @alexander
+    @presentation.save
+    # @presentation.reload
+    
+    assert_equal "new name 5", @presentation.name
+    assert_equal @alexander, @presentation.owner
+    assert_equal @dhh, @presentation.user
+    
+    assert !@dhh.is_owner_of?(@presentation)
+    assert @alexander.is_owner_of?(@presentation)
+    
+    assert !@alexander.is_creator_of?(@presentation)
+    assert @dhh.is_creator_of?(@presentation)
+    
+    
+  end
+  
 end
